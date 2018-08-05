@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="testPass" ng-style="{'background-image':'url({{backGroundImage}})', 'background-position': 'center center', 'background-size': 'cover'}">
+<head>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+</head>
+<script src="/resources/js/app.js"></script>
+<body>
+	<div ng-controller="testCTRL">
+	<!-- <div ng-style="{'background-image':'url({{backGroundImage}})', 'background-position': 'center center', 'background-size': 'cover'}">
+	test
+	</div> -->
+		<div ng-include src="header.url"></div>
+		<script type="text/ng-template" id="header.html"></script>
+		<a href="#"><img ng-src="{{homeImage}}" style="float: right; margin-right: 150px"
+			width="30" height="30" ng-click="homeClick()"> </a>
+	</div>
+</body>
+</html>

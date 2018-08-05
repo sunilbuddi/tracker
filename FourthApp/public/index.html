@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html ng-app="testPass">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Automation Tracker</title>
+<!--Import bootstrap.css-->
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-touch.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-animate.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/lodash.min.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/jszip.min.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/excel-builder.dist.js"></script>
+<script src="resources/js/app.js"></script>
+ <script src="http://ui-grid.info/release/ui-grid.js"></script>
+    <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css" type="text/css">
+    
+    
+</head>
+
+<style>
+.grid {
+  height: 800px;
+}
+</style>
+<div ng-include="'header.html'"></div>
+
+
+</head>
+
+<body>
+<div ui-view ng-controller="testCTRL">
+  <h3 align="center"><strong>TestPass Information</strong></h3>
+  <div ng-init="getAll()" style="width: 100%;" ui-grid="testPass" ui-grid-pagination class="grid" ui-grid-resize-columns ui-grid-auto-resize></div>
+  <br /><br />
+</div>
+</body>
+
+<!--Import jQuery before bootstrap.js-->
+<script type="text/javascript" src="resources/js/jquery-2.2.1.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>

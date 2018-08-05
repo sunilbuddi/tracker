@@ -1,0 +1,14 @@
+{
+  "name": "node-mysql-drew",
+  "description": "Demo REST API with Node",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.10.6",
+    "mysql": "^2.5.4",
+	"body-parser": "^1.15.1"
+  }
+}
