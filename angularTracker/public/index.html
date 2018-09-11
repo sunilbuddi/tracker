@@ -31,12 +31,17 @@
 }
 </style>
 <div ng-include="'header.html'"></div>
+<div>
+
 
 
 </head>
 
 <body>
+
 <div ui-view ng-controller="testCTRL">
+<button href="#" style="float: right; margin-right: 10px; margin-top: 4px" 
+			width="30" height="20" ng-click="compareClick()">Compare</button>
   <h3 align="center"><strong>TestPass Information</strong></h3>
   <div ng-init="getAll()" style="width: 100%;" ui-grid="testPass" ui-grid-pagination class="grid" ui-grid-resize-columns ui-grid-auto-resize></div>
   <br /><br />

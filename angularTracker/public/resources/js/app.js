@@ -18,13 +18,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.factory('myService', function() {
 	 var savedData = {}
+	 var savedSecondData = {}
 	 function set(data) {
 	   savedData = data;
 	 }
 	 function get() {
 	  return savedData;
 	 }
-
+	
 	 return {
 	  set: set,
 	  get: get
@@ -44,6 +45,16 @@ app.controller('testCTRL', ['$scope', 'myService', '$http', '$state','$log', '$s
     
     $scope.homeClick = function(){
         window.location = "index.html";
+        
+  }
+    
+    function CompareCtrl($scope) {
+        $scope.header = {name: "compare.html", url: "compare.html"};
+    }
+    
+    $scope.compareClick = function(){
+        window.location = "compare.html";
+        
   }
     
     $scope.homeImage = "/resources/images/home-1.png";
@@ -114,6 +125,69 @@ app.controller('testCTRL', ['$scope', 'myService', '$http', '$state','$log', '$s
     	myService.set(name);
     	$state.go('error');
     };
+    
+    function getDetails(name){
+    	var responseData = '';
+    	 $scope.loader.loading = true;
+    	 $http.get('/api/list/details' + name)
+         .then(function (response, responseData) {
+         	 if (response.error === 2) {
+					//if error code is returned from node code, then there are no entries in db!
+					$scope.statustext = "There are currently no Test cases available!";
+					$scope.loader.loading = false;
+				} else {
+					responseData = response.data.Details;
+					 console.log("Testpass 1 is "+name);
+					 console.log("assigned response is "+responseData);
+					//Turn off spinner
+					$scope.loader.loading = false;
+					$scope.statustext = "";
+					return responseData;
+				}
+          });
+    	 console.log("assigned response outside http is "+responseData);
+    	 return responseData; 
+    }
+    
+    
+   $scope.doCompare =  function(search1, search2) {
+	   var searchDetails1 = getDetails(search1);
+	   var searchDetails2 = getDetails(search2)
+	   console.log("Data1 in docompare is "+ searchDetails1);
+	   console.log("Data2 in docompare is "+ searchDetails2);			
+    	  var objectsDiffering = [];
+        		
+    	  compareJSONRecursive(search1, search2, objectsDiffering);
+    	  $scope.diffData =  objectsDiffering;
+    	  console.log("Different data is   "+$scope.diffData);
+    	}
+
+    	function compareJSONRecursive(json1, json2, objectsDiffering) {
+    	  for(prop in json1) {
+    	    if(json2.hasOwnProperty(prop)) {
+    	        switch(typeof(json1[prop])) {
+    	        case "object":
+    	            compareJSONRecursive(json1[prop], json2[prop], objectsDiffering);
+    	          break;
+    	        default:
+    	          if(json1[prop] !== json2[prop]) {
+    	            objectsDiffering.push(json1);
+    	          }
+    	          break;
+    	      }
+    	    } 
+    	    else {
+    	      objectsDiffering.push(json1);
+    	      break;
+    	    }
+    	  }
+    	}
+
+    	/*var differing = compareJSON(json1, json2);
+    	console.log(JSON.stringify(differing));*/
+    
+    
+  
 }]);
 
 
@@ -222,13 +296,14 @@ app.controller('SummaryController', ['$scope', 'myService', '$http', '$state','$
 									row.entity.subGridOptions = {
 											enableFiltering: true,
 											columnDefs: [
-												{ name: 'TestCaseID', displayName: 'Test Case ID', width:'10%'},
-												{ name: 'methodname', displayName: 'Method Name', width:'40%'},
-												{ name: 'status', displayName: 'Status', width:'10%'},
-												{ name: 'exception_name', displayName: 'Exception Name', width:'20%'},
-												{ name: 'executionTime', displayName: 'Duration', enableFiltering: false, width:'10%'},
-												{ name: 'bugId', displayName: 'Defect', width:'10%'},
-												{ name: 'filePath', displayName: 'Screenshot', width:'10%'}
+												{ name: 'TestCaseID', displayName: 'Test Case ID', width:'10%',resizable: true},
+												{ name: 'methodname', displayName: 'Method Name', width:'40%',resizable: true},
+												{ name: 'status', displayName: 'Status', width:'10%',resizable: true},
+												{ name: 'exception_name', displayName: 'Exception Name', width:'20%',resizable: true},
+												{ name: 'executionTime', displayName: 'Duration', enableFiltering: false, width:'10%',resizable: true},
+												{ name: 'bugId', displayName: 'Defect', width:'10%',resizable: true},
+												{ name: 'filePath', displayName: 'Screenshot', width:'10%',
+													cellTemplate:'<a ng-if="row.entity.filePath" href={{"http://54.163.92.77/php"+row.entity.filePath}} target="_blank"> View</a>',resizable: true}
 									]};
 								
 
@@ -332,6 +407,10 @@ app.controller('ThirdCtrl', ['$scope', 'myService', '$http', '$state','$log','$t
 				}
          });
 }]);
+
+
+
+
 
 
 

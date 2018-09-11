@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="testPass" ng-style="{'background-image':'url({{backGroundImage}})', 'background-position': 'center center', 'background-size': 'cover'}">
+<head>
+<title>Compare</title>
+<script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.3/angular.js" data-semver="1.4.3"></script>
+    <script data-require="angular-sanitize@*" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular-sanitize.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-touch.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular-animate.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/lodash.min.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/jszip.min.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/excel-builder.dist.js"></script>
+ <script src="http://ui-grid.info/release/ui-grid.js"></script>
+    <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css" type="text/css">
+    <!-- <script src="resources/js/select.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="resources/css/select.css" />
+    <link rel="stylesheet" href="resources/css/style.css" /> -->
+    <script src="resources/js/app.js"></script>
+ </head>  
+
+<body>
+	<div ng-controller="testCTRL"  ng-init="getAll()">
+  <form ng-submit="click(search);">
+  <label class="child-label" for="existing-phases">TestPass1:&nbsp;&nbsp;</label>
+  <input type="text" ng-model="search1" list="names">
+  <datalist id="names" class="datalist scrollable" ng-model="TestPassName1">
+    <option value=''>-- select an option --</option>
+    <option ng-repeat="option in testPass.data | filter:search | limitTo:15" value="{{option.name}}"></option>
+    
+  </datalist>
+  
+  <label class="child-label" for="existing-phases">TestPass2:&nbsp;&nbsp;</label>
+  <input type="text" ng-model="search2" list="names">
+  <datalist id="names" class="form-control" ng-model="TestPassName2">
+    <option ng-repeat="dataMap in testPass.data | filter:search | limitTo:15" value="{{datamap.name}}"></option>
+    
+  </datalist>
+  
+  <button type="submit" ng-click="doCompare(search1, search2)">Submit</button>
+ </form>
+ 
+ <!-- <form name="form" novalidate>
+      <div class="form-group">
+        <label>Select table or add:</label>
+        <ui-select ng-model="name1" reset-search-input="false" required="true" ng-maxlength="40">
+          <ui-select-match placeholder="Select table or add new one...">
+            <span>{{$select.selected.name || $select.search}}</span>
+            <a class="btn btn-xs btn-link pull-right" ng-click="main.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+          </ui-select-match>
+          <ui-select-choices repeat="option in testPass.data | filter:search" refresh="main.refreshResults($select)" refresh-delay="0">
+            <span>{{option.name}}</span>
+          </ui-select-choices>
+        </ui-select>
+        <label>Select drink or add:</label>
+        <ui-select ng-model="name2" reset-search-input="false" required="true" ng-maxlength="40">
+          <ui-select-match placeholder="Select drink or add new one...">
+            <span>{{$select.selected.name || $select.search}}</span>
+            <a class="btn btn-xs btn-link pull-right" ng-click="main.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+          </ui-select-match>
+          <ui-select-choices repeat="option1 in testPass.data | filter:search" refresh="main.refreshResults($select)" refresh-delay="0">
+            <span>{{option1.name}}</span>
+          </ui-select-choices>
+        </ui-select>
+      </div>
+      <button class="btn btn-primary">Submit</button>
+    </form> -->
+  
+</div>
+</body>
+</html>

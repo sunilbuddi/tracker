@@ -150,7 +150,7 @@ app.get('/api/list/Class', function (req, res) {
         "error": 1,
         "ClassSummary": ""
     };
-    var query = 'select s.TestCaseID, s.status, s.entryTime, s.assignedto, s.exception_name, s.exception_category, s.methodname, s.executionTime, IF(s.status = "PASS", NULL, f.pathOfTheFile) as filePath from status s, logs l, fileuploads f where s.RunID=l.RunId and l.fileid=f.ID and s.RunID in (select RunID from run where testPassId=(select prime from testPass where name="'+name+'")) and s.classname="'+className+'" and is_current="1" order by s.classname';
+    var query = 'select s.TestCaseID, s.status, s.entryTime, s.assignedto, s.exception_name, s.exception_category, s.methodname, s.executionTime, IF(s.status = "PASS", NULL, l.filePath) as filePath, l.message from status s, newlogs l where s.ID=l.StatusID and s.RunID in (select RunID from run where testPassId=(select prime from testPass where name="'+name+'")) and s.classname="'+className+'" order by s.classname';
     pool.getConnection(function (err, connection) {
 		connection.query(query, function (err, rows, fields) {
 			connection.release();
@@ -169,6 +169,38 @@ app.get('/api/list/Class', function (req, res) {
 				data["ClassSummary"] = 'error while performing query';
 				res.json(data);
 				console.log('Error while performing Summary list Query: ' + err);
+			}
+		});
+	
+	});
+});
+
+//Test Pass full summary
+app.get('/api/list/details:name', function (req, res) {
+    var name = req.params.name;
+    var data = {
+        "error": 1,
+        "Details": ""
+    };
+    var query = 'select TestCaseID,status,entryTime,assignedto,exception_name, exception_category,methodname,executionTime from status where RunID in (select RunID from run where testPassId=(select prime from testPass where name="'+name+'")) and is_current=1 order by classname;';
+    pool.getConnection(function (err, connection) {
+		connection.query(query, function (err, rows, fields) {
+			connection.release();
+
+			if (rows.length !== 0 && !err) {
+				data["error"] = 0;
+				data["Details"] = rows;
+				res.json(data);
+				console.log('data from server is '+ data);
+			} else if (rows.length === 0) {
+				//Error code 2 = no rows in db.
+				data["error"] = 2;
+				data["Details"] = 'No products Found..';
+				res.json(data);
+			} else {
+				data["error"] = 'error while performing query';
+				res.json(data);
+				console.log('Error while performing Full details list Query: ' + err);
 			}
 		});
 	
